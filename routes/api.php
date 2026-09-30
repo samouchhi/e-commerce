@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AbaPaymentController;
+use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\BannerController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\CategoryController;
@@ -33,6 +34,8 @@ Route::apiResource('categories', CategoryController::class);
 Route::apiResource('logistics', LogisticController::class);
 Route::apiResource('settings', SettingsController::class);
 Route::post('cart/resolve', CartController::class);
+Route::get('addresses', [AddressController::class, 'index'])->middleware('auth:sanctum');
+Route::delete('addresses/{address}', [AddressController::class, 'destroy'])->middleware('auth:sanctum');
 
 Route::match(['get', 'post'], 'orders/{order}/payment', [AbaPaymentController::class, 'generatePayment'])
     ->middleware(['auth:sanctum', 'throttle:20,1']);
