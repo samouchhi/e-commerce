@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\BannerController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\CustomerPasswordResetController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\LogisticController;
 use App\Http\Controllers\Api\LogoutController;
@@ -19,6 +20,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register', RegisterController::class)->middleware('throttle:5,1');
 Route::post('/login', LoginController::class)->middleware('throttle:5,1');
+Route::post('/forgot-password', [CustomerPasswordResetController::class, 'sendLink'])->middleware('throttle:5,1');
+Route::post('/reset-password', [CustomerPasswordResetController::class, 'reset'])->middleware('throttle:5,1');
 Route::post('/logout', LogoutController::class)->middleware('auth:sanctum');
 
 Route::get('/user', function (Request $request) {
