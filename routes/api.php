@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\BannerController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\CustomerChangePasswordController;
 use App\Http\Controllers\Api\CustomerPasswordResetController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\LogisticController;
@@ -23,6 +24,7 @@ Route::post('/login', LoginController::class)->middleware('throttle:5,1');
 Route::post('/forgot-password', [CustomerPasswordResetController::class, 'sendLink'])->middleware('throttle:5,1');
 Route::post('/reset-password', [CustomerPasswordResetController::class, 'reset'])->middleware('throttle:5,1');
 Route::post('/logout', LogoutController::class)->middleware('auth:sanctum');
+Route::post('/change-password', CustomerChangePasswordController::class)->middleware(['auth:sanctum', 'throttle:5,1']);
 
 Route::get('/user', function (Request $request) {
     return $request->user();
