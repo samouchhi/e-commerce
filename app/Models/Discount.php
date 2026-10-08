@@ -12,6 +12,7 @@ class Discount extends Model
     protected $fillable = [
         'name',
         'description',
+        'image_path',
         'value',
         'type',
         'start_date',

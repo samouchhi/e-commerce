@@ -28,6 +28,10 @@ class ProductResource extends JsonResource
                 fn (): array => [
                     'id' => $this->category->id,
                     'name' => $this->category->name,
+                    'image_path' => $this->category->image_path,
+                    'image_url' => $this->category->image_path
+                        ? Storage::disk('public')->url($this->category->image_path)
+                        : null,
                 ]
             ),
             'unit' => $this->whenLoaded('unit', fn (): array => [
@@ -54,6 +58,10 @@ class ProductResource extends JsonResource
                     ->map(fn ($discount): array => [
                         'name' => $discount->name,
                         'description' => $discount->description,
+                        'image_path' => $discount->image_path,
+                        'image_url' => $discount->image_path
+                            ? Storage::disk('public')->url($discount->image_path)
+                            : null,
                         'value' => $discount->value,
                         'type' => $discount->type,
                         'start_date' => $discount->start_date,

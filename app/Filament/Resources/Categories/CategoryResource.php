@@ -10,10 +10,12 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use UnitEnum;
@@ -37,6 +39,14 @@ class CategoryResource extends Resource
             ->components([
                 TextInput::make('name')
                     ->required(),
+                FileUpload::make('image_path')
+                    ->label('Category image')
+                    ->image()
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                    ->maxSize(5120)
+                    ->disk('public')
+                    ->directory('categories')
+                    ->preventFilePathTampering(),
             ]);
     }
 
@@ -44,6 +54,9 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
+                ImageColumn::make('image_path')
+                    ->label('Image')
+                    ->disk('public'),
                 TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('products_count')

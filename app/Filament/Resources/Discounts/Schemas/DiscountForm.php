@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Discounts\Schemas;
 use App\Filament\Resources\Products\Tables\ProductsTable;
 use App\Models\Product;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\ModalTableSelect;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -29,9 +30,19 @@ class DiscountForm
                     ->prefixIcon('heroicon-o-document-text')
                     ->required(),
 
+                FileUpload::make('image_path')
+                    ->label('Promotion image')
+                    ->image()
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                    ->maxSize(5120)
+                    ->disk('public')
+                    ->directory('promotions')
+                    ->preventFilePathTampering()
+                    ->columnSpanFull(),
+
                 TextInput::make('value')
                     ->prefixIcon(
-                        fn (Get $get): string => $get('type') === 'percentage'
+                        fn(Get $get): string => $get('type') === 'percentage'
                             ? 'heroicon-o-percent-badge'
                             : 'heroicon-o-currency-dollar'
                     )
@@ -74,7 +85,7 @@ class DiscountForm
 
                 RepeatableEntry::make('selectedProducts')
                     ->hiddenLabel()
-                    ->state(fn (Get $get) => Product::query()
+                    ->state(fn(Get $get) => Product::query()
                         ->whereIn('id', $get('products') ?? [])
                         ->get())
                     ->table([
@@ -87,7 +98,7 @@ class DiscountForm
 
                     ])
                     ->contained(false)
-                    ->visible(fn (Get $get): bool => filled($get('products')))
+                    ->visible(fn(Get $get): bool => filled($get('products')))
                     ->columnSpanFull(),
 
             ]);
